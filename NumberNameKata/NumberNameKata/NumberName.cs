@@ -30,26 +30,37 @@ namespace NumberNameKata
 
         public NumberName(int number)
         {
-            //int[] numbers = SplitNumber(number.ToString(CultureInfo.InvariantCulture));
-            //string name = string.Empty;
-            //for (int i = 0; i < numbers.Length; i++)
-            //{
-            //    name = GetNumberName(numbers[i]) + " " + _units[i] + name;
-            //}
-            //Name = name;
-            Name = GetNumberName(number);
+            int[] numbers = SplitNumber(number.ToString(CultureInfo.InvariantCulture));
+            string name = string.Empty;
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                string unit = i == 0 ? string.Empty : _units[i];
+                if (i == 0)
+                {
+                    name = GetNumberName(numbers[i]);
+                }
+                else
+                {
+                    name = GetNumberName(numbers[i]) + " " + unit + ", " + name;
+                }
+            }
+            Name = name;
         }
 
         private int[] SplitNumber(string number)
         {
             List<int> numbers = new List<int>();
 
-            string temp = number;
-            while (!string.IsNullOrEmpty(temp) && temp.Length > 3)
+            for (int i = number.Length; i > 0; i = i - 3)
             {
-                string num = temp.Substring(temp.Length - 3, temp.Length - 1);
-                numbers.Add(Convert.ToInt32(num));
-                temp = temp.Substring(0, temp.Length - 3);
+                if (i < 3)
+                {
+                    numbers.Add(Convert.ToInt32(number.Substring(0, i)));
+                }
+                else
+                {
+                    numbers.Add(Convert.ToInt32(number.Substring(i - 3, 3)));
+                }
             }
 
             return numbers.ToArray();

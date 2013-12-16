@@ -61,14 +61,33 @@ namespace NumberNameKata
         [TestMethod]
         public void Should_parse_thousands_number()
         {
-            //NumberName numberName = new NumberName(1001);
-            //Assert.AreEqual("one thousand, one", numberName.Name);
+            NumberName numberName = new NumberName(1001);
+            Assert.AreEqual("one thousand, one", numberName.Name);
 
-            //numberName = new NumberName(1023);
-            //Assert.AreEqual("one thousand, twenty three", numberName.Name);
+            numberName = new NumberName(1023);
+            Assert.AreEqual("one thousand, twenty three", numberName.Name);
 
-            //numberName = new NumberName(2314);
-            //Assert.AreEqual("two thousand, three hundred and fourteen", numberName.Name);
+            numberName = new NumberName(2314);
+            Assert.AreEqual("two thousand, three hundred and fourteen", numberName.Name);
+
+            numberName = new NumberName(32314);
+            Assert.AreEqual("thirty two thousand, three hundred and fourteen", numberName.Name);
+
+            numberName = new NumberName(632314);
+            Assert.AreEqual("six hundred and thirty two thousand, three hundred and fourteen", numberName.Name);
+        }
+
+        [TestMethod]
+        public void Should_parse_million_number()
+        {
+            NumberName numberName = new NumberName(1344534);
+            Assert.AreEqual("one million, three hundred and fourty four thousand, five hundred and thirty four", numberName.Name);
+
+            numberName = new NumberName(41344534);
+            Assert.AreEqual("fourty one million, three hundred and fourty four thousand, five hundred and thirty four", numberName.Name);
+
+            numberName = new NumberName(521344534);
+            Assert.AreEqual("five hundred and twenty one million, three hundred and fourty four thousand, five hundred and thirty four", numberName.Name);
         }
     }
 }
