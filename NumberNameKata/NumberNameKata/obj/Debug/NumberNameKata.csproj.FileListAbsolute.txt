@@ -1,0 +1,5 @@
+E:\SourceCode\Others\NumberNameKata\NumberNameKata\NumberNameKata\bin\Debug\NumberNameKata.dll
+E:\SourceCode\Others\NumberNameKata\NumberNameKata\NumberNameKata\bin\Debug\NumberNameKata.pdb
+E:\SourceCode\Others\NumberNameKata\NumberNameKata\NumberNameKata\obj\Debug\NumberNameKata.csprojResolveAssemblyReference.cache
+E:\SourceCode\Others\NumberNameKata\NumberNameKata\NumberNameKata\obj\Debug\NumberNameKata.dll
+E:\SourceCode\Others\NumberNameKata\NumberNameKata\NumberNameKata\obj\Debug\NumberNameKata.pdb
