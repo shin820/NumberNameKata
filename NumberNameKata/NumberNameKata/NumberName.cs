@@ -6,6 +6,8 @@ namespace NumberNameKata
 {
     public class NumberName
     {
+        private const int SEGMENT_LEN = 3;
+
         private readonly string[] _unitsDigits =
         {
             "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
@@ -20,7 +22,7 @@ namespace NumberNameKata
 
         private readonly string[] _tensDigits =
         {
-            "twenty", "thirty", "fourty", "fifity", "sixty", "seventy", "eighty",
+            "ten","twenty", "thirty", "fourty", "fifity", "sixty", "seventy", "eighty",
             "ninety"
         };
 
@@ -30,37 +32,32 @@ namespace NumberNameKata
 
         public NumberName(int number)
         {
-            int[] numbers = SplitNumber(number.ToString(CultureInfo.InvariantCulture));
-            string name = string.Empty;
-            for (int i = 0; i < numbers.Length; i++)
+            int[] segments = SplitNumber(number.ToString(CultureInfo.InvariantCulture));
+            Name = GetNumberName(segments);
+        }
+
+        private string GetNumberName(int[] segments)
+        {
+            string name = GetNumberName(segments[0]);
+            for (int i = 1; i < segments.Length; i++)
             {
                 string unit = i == 0 ? string.Empty : _units[i];
-                if (i == 0)
-                {
-                    name = GetNumberName(numbers[i]);
-                }
-                else
-                {
-                    name = GetNumberName(numbers[i]) + " " + unit + ", " + name;
-                }
+                name = GetNumberName(segments[i]) + " " + unit + ", " + name;
+
             }
-            Name = name;
+            return name;
         }
 
         private int[] SplitNumber(string number)
         {
             List<int> numbers = new List<int>();
 
-            for (int i = number.Length; i > 0; i = i - 3)
+            for (int i = number.Length; i > 0; i = i - SEGMENT_LEN)
             {
-                if (i < 3)
-                {
-                    numbers.Add(Convert.ToInt32(number.Substring(0, i)));
-                }
-                else
-                {
-                    numbers.Add(Convert.ToInt32(number.Substring(i - 3, 3)));
-                }
+                string segment = i < SEGMENT_LEN
+                    ? number.Substring(0, i)
+                    : number.Substring(i - SEGMENT_LEN, SEGMENT_LEN);
+                numbers.Add(Convert.ToInt32(segment));
             }
 
             return numbers.ToArray();
@@ -68,52 +65,60 @@ namespace NumberNameKata
 
         private string GetNumberName(int number)
         {
-            int unitsDigit = number % 10;
-            int tensDigit = number / 10;
+            if (number >= 1000)
+            {
+                throw new Exception("exception");
+            }
 
-            if (tensDigit >= 10)
+            if (number >= 100)
             {
                 return PareseHundredsNumber(number);
             }
 
-            if (tensDigit >= 1)
+            if (number >= 10)
             {
-                return ParseTensNumber(tensDigit, unitsDigit);
+                return ParseTensNumber(number);
             }
 
-            return ParseUnitsNumber(unitsDigit);
+            //number < 10;
+            return ParseUnitsNumber(number);
         }
 
-        private string ParseUnitsNumber(int unitsDigit)
+        private string ParseUnitsNumber(int number)
         {
+            int unitsDigit = number % 10;
             return _unitsDigits[unitsDigit];
         }
 
-        private string ParseTensNumber(int tensDigit, int unitsDigit)
+        private string ParseTensNumber(int number)
         {
-            bool isLessThanTwenty = tensDigit == 1;
-            if (isLessThanTwenty)
+            int unitsDigit = number % 10;
+
+            //11~19
+            if (number < 20)
             {
                 return _tensDigitsLessThanTweenty[unitsDigit];
             }
 
-            string tensNumber = _tensDigits[tensDigit - 2];
-
-            bool isGreaterThanTwenty = unitsDigit > 0;
-            if (isGreaterThanTwenty)
+            int tensDigit = number / 10;
+            string tensDigitName = _tensDigits[tensDigit - 1];
+            if (unitsDigit > 0)
             {
-                return tensNumber + " " + ParseUnitsNumber(unitsDigit);
+                //21,22,23 and so on
+                return tensDigitName + " " + ParseUnitsNumber(unitsDigit);
             }
 
-            return tensNumber;
+            //20,30,40 and so on
+            return tensDigitName;
         }
 
-        private string PareseHundredsNumber(int number)
+        private string PareseHundredsNumber(int hundredNumber)
         {
-            int hundredsDigit = number / 100;
-            string hunderedName = ParseUnitsNumber(hundredsDigit) + " " + _units[0];
+            int hundredsDigit = hundredNumber / 100;
+            string hundredUnit = _units[0];
+            string hunderedName = ParseUnitsNumber(hundredsDigit) + " " + hundredUnit;
 
-            int surpusNumber = number - hundredsDigit * 100;
+            int surpusNumber = hundredNumber - hundredsDigit * 100;
             if (surpusNumber > 0)
             {
                 hunderedName = hunderedName + " and " + GetNumberName(surpusNumber);
