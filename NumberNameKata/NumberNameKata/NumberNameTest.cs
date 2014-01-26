@@ -11,7 +11,7 @@ namespace NumberNameKata
             NumberName numberName = new NumberName(0);
             Assert.AreEqual("zero", numberName.Name);
 
-            numberName = new NumberName(8);
+            numberName = new NumberName(9);
             Assert.AreEqual("nine", numberName.Name);
         }
 
